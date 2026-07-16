@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Pengguna - ARMUFA CPANEL</title>
+    <meta name="theme-color" content="#0d1321" />
+    <link rel="icon" href="https://files.catbox.moe/fg5swy.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/users.css" />
+    <script>
+      (function () {
+        try {
+          const stored = localStorage.getItem("theme");
+          const prefersDark =
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const theme = stored || (prefersDark === false ? "light" : "dark");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      main { align-items: flex-start; padding-top: 50px; }
+      .card { max-width: 500px; }
+      .form-group button {
+        width: 100%;
+        height: 46px;
+        background: linear-gradient(135deg, var(--brand), var(--violet));
+        color: #05070c;
+        cursor: pointer;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 14px;
+        font-family: var(--font-display);
+      }
+      .form-group button:disabled { background: var(--text-tertiary); cursor: not-allowed; }
+    </style>
+  </head>
+  <body>
+    <div id="notification-container"></div>
+    <div class="overlay"></div>
+    <header>
+      <a
+        href="/users"
+        class="header-btn"
+        style="left: 20px; text-decoration: none; font-size: 24px"
+        >&larr;</a
+      >
+      <img class="logo" src="https://files.catbox.moe/fg5swy.jpg" alt="Logo" />
+      <div style="font-size: 22px; font-weight: 700">Edit Pengguna</div>
+      <button
+        id="theme-toggle"
+        class="theme-toggle"
+        type="button"
+        aria-pressed="false"
+        title="Ganti tema"
+      >
+        <span id="theme-icon" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>
+      </button>
+    </header>
+    <main>
+      <div class="card">
+        <h2>Edit Detail Pengguna</h2>
+        <form id="edit-user-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              readonly
+              style="background-color: var(--input-bg-disabled, #eee)"
+            />
+          </div>
+          <div class="form-group">
+            <label for="role">Role</label>
+            <select
+              id="role"
+              class="form-control"
+              style="
+                height: 46px;
+                width: 100%;
+                font-size: 14px;
+                padding: 0 14px;
+                border-radius: 12px;
+                border: 1px solid var(--border);
+                background-color: var(--input-bg);
+                color: var(--text-primary);
+              "
+            >
+              <option value="ceo">CEO</option>
+              <option value="tangan_kanan">Tangan Kanan</option>
+              <option value="owner">Owner Panel</option>
+              <option value="partner">Partner Panel</option>
+              <option value="admin_panel">Admin Panel</option>
+              <option value="reseller">Reseller Panel</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="password">Password Baru (Opsional)</label>
+            <input
+              type="text"
+              id="password"
+              placeholder="Kosongkan jika tidak ingin diubah"
+            />
+          </div>
+          <div class="form-group">
+            <label for="telegram-id">ID Telegram Tujuan Notifikasi</label>
+            <input
+              type="text"
+              id="telegram-id"
+              placeholder="Kosongkan jika tidak ingin kirim notif"
+            />
+          </div>
+          <div class="form-group">
+            <button type="submit" id="save-btn">Simpan Perubahan</button>
+          </div>
+        </form>
+      </div>
+    </main>
+    <script>
+      // --- Gatekeeping & Initial Setup ---
+      if (sessionStorage.getItem("creatorRole") !== "admin_website") {
+        window.location.href = "/admin";
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const username = params.get("username");
+      const currentRole = params.get("role");
+
+      if (!username || !currentRole) {
+        alert("Pengguna tidak valid.");
+        window.location.href = "/users";
+      }
+
+      document.getElementById("username").value = username;
+      document.getElementById("role").value = currentRole;
+
+      // --- Form Submission ---
+      const editForm = document.getElementById("edit-user-form");
+      const saveBtn = document.getElementById("save-btn");
+
+      editForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const newPassword = document.getElementById("password").value.trim();
+        const newRole = document.getElementById("role").value;
+        const telegramId = document.getElementById("telegram-id").value.trim(); 
+
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Menyimpan...";
+
+        try {
+          const response = await fetch("/api/edituser", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              username,
+              role: currentRole,
+              newRole,
+              newPassword,
+              telegramId, 
+              loggedInUsername: localStorage.getItem("username"),
+            }),
+          });
+          const data = await response.json();
+          showToast(data.message, response.ok ? "success" : "error");
+          if (response.ok) {
+            setTimeout(() => (window.location.href = "/users"), 2000);
+          }
+        } catch (err) {
+          showToast("Terjadi kesalahan jaringan.", "error");
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.textContent = "Simpan Perubahan";
+        }
+      });
+
+      // --- UI Helpers (Toast, Theme) ---
+      function showToast(message, type = "success") {
+        const container = document.getElementById("notification-container");
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.classList.add("show"), 100);
+        setTimeout(() => {
+          toast.classList.remove("show");
+          toast.addEventListener("transitionend", () => toast.remove());
+        }, 5000);
+      }
+
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
+      function applyThemeUI(theme) {
+        const isDark = theme === "dark";
+        themeToggleBtn.setAttribute("aria-pressed", String(isDark));
+        themeIcon.innerHTML = isDark ? "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/></svg>" : "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z\"/></svg>";
+      }
+      function setTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        try {
+          localStorage.setItem("theme", theme);
+        } catch (e) {}
+        applyThemeUI(theme);
+      }
+      themeToggleBtn.addEventListener("click", () => {
+        const current =
+          document.documentElement.getAttribute("data-theme") || "dark";
+        setTheme(current === "dark" ? "light" : "dark");
+      });
+      setTheme(localStorage.getItem("theme") || "dark");
+      document.getElementById("y").textContent = new Date().getFullYear();
+    </script>
+    <footer>© <span id="y"></span> ARMUFA CPANEL</footer>
+  </body>
+</html>
