@@ -1,0 +1,37 @@
+/* Autodelete page chrome — imports shared design system */
+@import url("style.css");
+@import url("panel.css");
+
+main { padding: 50px 24px; }
+.card { max-width: 800px; }
+
+.action-btn {
+  background: var(--error);
+  color: #05070c;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  width: 100%;
+  margin-bottom: 20px;
+}
+.action-btn:disabled { background: var(--text-tertiary); cursor: not-allowed; }
+
+.log-container { margin-top: 20px; }
+
+#log-output {
+  background-color: var(--card-bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  height: 400px;
+  overflow-y: scroll;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
