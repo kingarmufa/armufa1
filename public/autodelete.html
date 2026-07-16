@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auto Delete - ARMUFA CPANEL</title>
+    <meta name="theme-color" content="#0d1321" />
+    <link rel="icon" href="https://files.catbox.moe/fg5swy.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/autodelete.css" />
+    <script>
+      (function () {
+        try {
+          const stored = localStorage.getItem("theme");
+          const prefersDark =
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const theme = stored || (prefersDark === false ? "light" : "dark");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      .panel-selector-container { margin-bottom: 24px; }
+    </style>
+  </head>
+  <body>
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    <nav id="sidebar" class="sidebar">
+      <button id="sidebar-close-btn" class="close-btn">&times;</button>
+
+      <div class="sidebar-profile">
+        <img
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iY3VycmVudENvbG9yIj48cGF0aCBkPSJNMTIgMTJjMi4yMSAwIDQtMS43OSA0LTRzLTEuNzktNC00LTQtNCAxLjc5LTQgNCAxLjc5IDQgNCA0em0wIDJjLTIuNjcgMC04IDEuMzQtOCA0djJoMTZ2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+PC9zdmc+"
+          alt="Profile"
+          class="profile-pic"
+        />
+        <div class="profile-details">
+          <span class="profile-name">Memuat...</span>
+          <span class="profile-role">Memuat...</span>
+        </div>
+      </div>
+
+      <a href="/panel" id="admin-global-panel-link">
+        <span class="icon"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="6" width="4" height="15"/><rect x="17" y="3" width="4" height="18"/></svg></span> Buat Panel
+      </a>
+      <a href="/add-server" id="admin-global-server-link">
+        <span class="icon"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Tambah Server
+      </a>
+      
+      <a href="/panel" id="panel-asta-link" style="display: none;">
+        <span class="text"><span class="icon"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="6" width="4" height="15"/><rect x="17" y="3" width="4" height="18"/></svg></span>Buat Panel</span>
+      </a>
+      <a href="/add-server" id="server-asta-link" style="display: none;">
+        <span class="text"><span class="icon"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Add Server</span>
+      </a>
+      <a href="/admin" id="admin-page-link"
+        ><span class="icon"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18h16l1-9-5 3-4-6-4 6-5-3z"/><line x1="4" y1="21" x2="20" y2="21"/></svg></span> Halaman Admin</a
+      >
+      <a href="/users" id="manage-users-link"
+        ><span class="icon"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="9" r="2.6"/><path d="M15.2 14.4c2.6.4 4.8 2.4 4.8 5.6"/></svg></span> Kelola Pengguna</a
+      >
+      <a href="/autodelete" id="autodelete-link"
+        ><span class="icon"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4,7 20,7"/><path d="M6 7l1 13h10l1-13"/><path d="M9 7V4h6v3"/></svg></span> Auto Delete</a
+      >
+      <a href="#" id="sidebar-logout-btn">
+        <span class="icon"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h9"/><line x1="20" y1="12" x2="9" y2="12"/><polyline points="16,8 20,12 16,16"/></svg></span> Keluar
+      </a>
+      </nav>
+
+    <div id="notification-container"></div>
+    <div class="overlay"></div>
+    <header>
+      <button id="menu-btn" class="header-btn" style="left: 20px">
+        &#9776;
+      </button>
+      <img class="logo" src="https://files.catbox.moe/fg5swy.jpg" alt="Logo" />
+      <div style="font-size: 22px; font-weight: 700">Auto Delete Panel</div>
+      <button
+        id="theme-toggle"
+        class="theme-toggle"
+        type="button"
+        aria-pressed="false"
+        title="Ganti tema"
+      >
+        <span id="theme-icon" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>
+      </button>
+    </header>
+    <main>
+      <div class="card">
+        <h2>Mulai Proses Hapus Otomatis</h2>
+        <p class="subtitle">
+          Fitur ini akan menghapus pengguna dan server yang tidak memenuhi
+          kriteria. Pengguna dalam daftar `antidelpanel.json` akan dilewati.
+        </p>
+
+        <div id="panel-selector-wrapper" style="display: none">
+          <label
+            style="
+              display: block;
+              margin-bottom: 5px;
+              font-weight: bold;
+              font-size: 13px;
+              color: var(--text-secondary);
+            "
+            >Pilih Panel Target</label
+          >
+          <div class="panel-selector-container" id="panel-selector">
+            <div class="panel-selector-header">
+              <div id="current-panel-display">
+                <span class="status-dot"></span>
+                <span id="current-panel-name">Memuat panel...</span>
+              </div>
+              <span class="arrow"></span>
+            </div>
+            <ul class="panel-options" id="panel-options-container"></ul>
+          </div>
+        </div>
+
+        <div>
+          <label
+            style="
+              display: block;
+              margin-bottom: 5px;
+              font-weight: bold;
+              font-size: 13px;
+              color: var(--text-secondary);
+            "
+            >Pilih Mode Penghapusan</label
+          >
+          <div class="panel-selector-container" id="mode-selector">
+            <div class="panel-selector-header">
+              <div id="current-mode-display">
+                <span id="current-mode-name"
+                  >Hapus Total (Pengguna & Server)</span
+                >
+              </div>
+              <span class="arrow"></span>
+            </div>
+            <ul class="panel-options" id="mode-options-container">
+              <li class="panel-option active" data-mode="total">
+                Hapus Total (Pengguna & Server)
+              </li>
+              <li class="panel-option" data-mode="inactive">
+                Hapus Pengguna & Server Tidak Aktif
+              </li>
+              <li class="panel-option" data-mode="only-inactive-servers">
+                Hapus Server Tidak Aktif Saja
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <button id="start-delete-btn" class="action-btn">Mulai Proses</button>
+        <div class="log-container">
+          <h3>Log Proses:</h3>
+          <pre id="log-output"></pre>
+        </div>
+      </div>
+    </main>
+    <script src="js/autodelete.js"></script>
+    <footer>© <span id="y"></span> ARMUFA CPANEL</footer>
+  </body>
+</html>
