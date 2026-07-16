@@ -1,0 +1,96 @@
+/* User management chrome — imports shared design system */
+@import url("style.css");
+@import url("panel.css");
+
+.form-group { margin-bottom: 16px; }
+
+.role-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.role-btn {
+  border: 1px solid var(--border);
+  background: var(--card-bg-soft);
+  color: var(--text-primary);
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.role-btn:hover { border-color: var(--brand); }
+.role-btn[aria-pressed="true"] {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px var(--ring);
+  color: var(--brand);
+}
+
+.role-helper { margin-top: 8px; color: var(--text-secondary); font-size: 12px; }
+
+.user-list { list-style: none; padding: 0; margin-top: 24px; }
+.user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.user-item:last-child { border-bottom: none; }
+
+.delete-btn {
+  background: var(--error);
+  color: #05070c;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.role-badge {
+  position: absolute;
+  left: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(76,201,240,0.14);
+  color: var(--brand);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+
+/* Table wrapper for horizontal scroll */
+.table-wrapper { overflow-x: auto; margin-bottom: 20px; border: 1px solid var(--border); border-radius: 14px; }
+
+/* Filter controls */
+.filter-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+
+/* Pagination controls */
+.pagination-controls { display: flex; justify-content: center; align-items: center; gap: 10px; }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  body { padding-left: 0; }
+  main { padding: 24px 10px; }
+  .card { max-width: 100%; padding: 16px; }
+  .filter-controls { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .custom-select-wrapper { width: 100%; }
+  .table-controls { text-align: center; }
+  table { font-size: 14px; min-width: 600px; }
+  th, td { padding: 8px 4px; white-space: nowrap; }
+  .action-btn { padding: 4px 8px; font-size: 12px; width: 100%; margin: 0; }
+  td:last-child { display: flex; flex-direction: column; gap: 4px; padding: 4px; }
+  .pagination-controls { flex-direction: column; gap: 10px; }
+  .pagination-controls button { width: 100%; margin: 0; }
+  .pagination-controls span { margin: 10px 0; }
+  th button { margin-left: 5px; padding: 4px 6px; font-size: 10px; }
+}
