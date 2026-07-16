@@ -1,0 +1,122 @@
+/* ============================================================
+   Checkout Modal — beli role via QRIS
+   ============================================================ */
+
+.buy-btn {
+  margin-top: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+.checkout-content {
+  max-width: 420px;
+}
+
+.checkout-content h3 {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.checkout-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.checkout-form label .opt {
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.checkout-form input,
+.checkout-form select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  background: var(--card-bg-soft);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: var(--font-mono);
+}
+
+.checkout-form input:focus,
+.checkout-form select:focus {
+  outline: none;
+  border-color: var(--brand);
+}
+
+.checkout-error {
+  color: #f87171;
+  font-size: 13px;
+  min-height: 16px;
+}
+
+.qr-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 18px 0;
+}
+
+.qr-image {
+  width: 240px;
+  height: 240px;
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  background: #fff;
+  padding: 8px;
+}
+
+.qr-status {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.qr-order {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.cred-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--card-bg-soft);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 16px 0;
+}
+
+.cred-box div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+}
+
+.cred-box span {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.cred-box b {
+  color: var(--text-primary);
+  font-size: 15px;
+}
