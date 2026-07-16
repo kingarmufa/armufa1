@@ -1,0 +1,273 @@
+/* Panel dashboard chrome — imports the shared design system, adds
+   sidebar / header-button / profile pieces used by panel & add-server pages */
+@import url("style.css");
+
+.form-group select {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b95ac' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.admin-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: auto;
+  padding: 10px 0;
+}
+.admin-checkbox input { width: auto; height: auto; }
+.admin-checkbox label { margin-bottom: 0; font-weight: normal; text-transform: none; }
+
+/* --- sidebar --- */
+.sidebar {
+  height: 100%;
+  width: 260px;
+  position: fixed;
+  z-index: 1001;
+  top: 0;
+  left: 0;
+  background: var(--card-bg);
+  overflow-x: hidden;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  transform: translateX(-260px);
+  padding-top: 60px;
+  box-shadow: var(--shadow);
+  border-right: 1px solid var(--border);
+  pointer-events: none;
+}
+
+.sidebar.open { transform: translateX(0); pointer-events: auto; }
+
+.sidebar a {
+  padding: 11px 15px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: 0.15s ease;
+  border-radius: 10px;
+  margin: 3px 12px;
+}
+
+.sidebar a:hover {
+  background: var(--card-bg-soft);
+  color: var(--text-primary);
+}
+
+.sidebar a.active,
+.sidebar a[aria-current="page"] {
+  background: linear-gradient(135deg, rgba(76,201,240,0.14), rgba(124,92,252,0.14));
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.sidebar .close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 30px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 1;
+}
+.sidebar .close-btn:hover { color: var(--brand); }
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(5,7,12,0.6);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  backdrop-filter: blur(2px);
+}
+.sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+
+.header-btn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.header-btn:hover { border-color: var(--brand); }
+
+/* --- sidebar profile --- */
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 15px 18px 15px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+.profile-pic {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: linear-gradient(135deg, var(--brand), var(--violet));
+  color: #05070c;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+.profile-details { display: flex; flex-direction: column; min-width: 0; }
+.profile-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  font-family: var(--font-display);
+}
+.profile-role {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-family: var(--font-mono);
+}
+
+/* --- panel selector (dropdown to switch which panel is active) --- */
+.panel-selector-container {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--input-bg);
+}
+.panel-selector-header {
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.panel-selector-header:hover { background-color: var(--card-bg-soft); }
+#current-panel-display { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--text-primary); }
+#current-panel-display .status-dot {
+  width: 8px; height: 8px;
+  background-color: var(--success);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(52,211,153,0.18);
+}
+.panel-selector-header .arrow,
+.custom-select-trigger .arrow {
+  border: solid var(--text-secondary);
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.panel-selector-container.open .arrow,
+.custom-select-wrapper.open .arrow { transform: rotate(-135deg); }
+
+.panel-options,
+.custom-options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  border-top: 1px solid transparent;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  z-index: 20;
+  box-shadow: var(--shadow);
+}
+.panel-selector-container.open .panel-options,
+.custom-select-wrapper.open .custom-options {
+  max-height: 260px;
+  overflow-y: auto;
+  border-top-color: var(--border);
+  padding: 5px 0;
+}
+
+.panel-option,
+.custom-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.panel-option.active,
+.custom-option.selected {
+  background-color: rgba(76,201,240,0.14);
+  color: var(--brand);
+  font-weight: 600;
+}
+.panel-option:not(.active):hover,
+.custom-option:not(.selected):hover { background-color: var(--card-bg-soft); }
+.custom-option.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background-color: transparent !important;
+  color: var(--text-tertiary) !important;
+}
+.panel-option .icon,
+.custom-option .icon { font-size: 1.15em; }
+
+/* --- custom select trigger (shared shape with panel-selector-header) --- */
+.custom-select-wrapper { position: relative; user-select: none; }
+.custom-select-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  height: 46px;
+  box-sizing: border-box;
+}
+.custom-select-wrapper.open .custom-select-trigger {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+@media (max-width: 640px) {
+  .sidebar { width: 82vw; max-width: 280px; }
+}
